@@ -32,7 +32,7 @@ public class Prestito {
     @Column(name = "data_restituzione_effettiva")
     private LocalDate dataRestituzioneEffettiva;
 
-    protected Prestito() {
+    public Prestito() {
     }
 
     public Prestito(Utente utente, ElementoCatalogo elementoCatalogo) {
@@ -51,16 +51,32 @@ public class Prestito {
         return utente;
     }
 
+    public void setUtente(Utente utente) {
+        this.utente = utente;
+    }
+
     public ElementoCatalogo getElementoCatalogo() {
         return elementoCatalogo;
+    }
+
+    public void setElementoCatalogo(ElementoCatalogo elementoCatalogo) {
+        this.elementoCatalogo = elementoCatalogo;
     }
 
     public LocalDate getDataInizioPrestito() {
         return dataInizioPrestito;
     }
 
+    public void setDataInizioPrestito(LocalDate dataInizioPrestito) {
+        this.dataInizioPrestito = dataInizioPrestito;
+    }
+
     public LocalDate getDataRestituzionePrevista() {
         return dataRestituzionePrevista;
+    }
+
+    public void setDataRestituzionePrevista(LocalDate dataRestituzionePrevista) {
+        this.dataRestituzionePrevista = dataRestituzionePrevista;
     }
 
     public LocalDate getDataRestituzioneEffettiva() {

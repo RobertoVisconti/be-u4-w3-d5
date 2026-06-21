@@ -26,6 +26,7 @@ public class PrestitoDAO {
             transaction.begin();
             em.persist(prestito);
             transaction.commit();
+            System.out.println("Prestito avvenuto con successo.");
         } catch (Exception ex) {
             if (transaction.isActive()) transaction.rollback();
             System.out.println("Errore nel salvataggio prestito : " + ex.getMessage());
@@ -40,28 +41,11 @@ public class PrestitoDAO {
         return prestito;
     }
 
-    public void restituisciElemento(UUID idPrestito) {
-        EntityTransaction transaction = em.getTransaction();
-        try {
-            transaction.begin();
-            Prestito prestito = this.findById(idPrestito);
-            prestito.setDataRestituzioneEffettiva(LocalDate.now());
-            transaction.commit();
-            System.out.println("Restituzione effettuata correttamente dell'elemento.");
-        } catch (Exception ex) {
-            if (transaction.isActive()) transaction.rollback();
-            if (ex instanceof PrestitoNonTrovatoException) {
-                throw ex;
-            }
-            System.out.println("Errore durante la restituzione: " + ex.getMessage());
-        }
-    }
-
     // Ricerca tramite NUMERO TESSERA
-    public List<ElementoCatalogo> findByPrestitoTessera(String numeroTessera) {
+    public List<ElementoCatalogo> findByTessera(String numeroTessera) {
         try {
             TypedQuery<ElementoCatalogo> query = em.createQuery("SELECT p.elementoCatalogo FROM Prestito p " +
-                    "WHERE p.utente.numeroTessera = :tessera " +
+                    "WHERE p.utente.numeroDiTessera = :tessera " +
                     "AND p.dataRestituzioneEffettiva IS NULL", ElementoCatalogo.class);
             query.setParameter("tessera", numeroTessera);
             return query.getResultList();
