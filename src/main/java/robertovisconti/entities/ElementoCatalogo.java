@@ -54,6 +54,10 @@ public abstract class ElementoCatalogo {
         return numeroPagine;
     }
 
+    public String getTitolo() {
+        return titolo;
+    }
+
     @Override
     public String toString() {
         return "ElementoCatalogo{" +

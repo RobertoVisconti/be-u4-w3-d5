@@ -4,10 +4,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import robertovisconti.dao.CatalogoDAO;
+import robertovisconti.entities.ElementoCatalogo;
 import robertovisconti.entities.Libri;
 import robertovisconti.entities.Riviste;
 import robertovisconti.enums.Periodicita;
+import robertovisconti.exceptions.ElementoNonTrovatoException;
 import robertovisconti.exceptions.IsbnNonTrovatoException;
+
+import java.util.List;
 
 public class Application {
 
@@ -39,30 +43,58 @@ public class Application {
 //        catalogoDAO.save(rv3);
 
 
-        // METODO RICERCA ISBN
+//         METODO RICERCA ISBN
 
-//        String isbnRicerca = "9772039411012";
-//
-//        ElementoCatalogo elementoTrovato = catalogoDAO.findByIsbn(isbnRicerca);
-//        if (elementoTrovato != null) {
-//            System.out.println("Elemento trovato nel db: " + elementoTrovato);
-//        } else {
-//            throw new IsbnNonTrovatoException(isbnRicerca);
-//        }
+        String isbnRicerca = "9772039411012";
+
+        ElementoCatalogo elementoTrovato = catalogoDAO.findByIsbn(isbnRicerca);
+        if (elementoTrovato != null) {
+            System.out.println("Elemento trovato nel db: " + elementoTrovato);
+        } else {
+            throw new IsbnNonTrovatoException(isbnRicerca);
+        }
 
 
         // METODO DELETE ISBN
 
-        String isbnDelete = "9771120533002";
+//        String isbnDelete = "9771120533002";
+//
+//        try {
+//            catalogoDAO.deleteByIsbn(isbnDelete);
+//            System.out.println("Elemento rimosso con successo.");
+//        } catch (IsbnNonTrovatoException ex) {
+//            System.out.println("Errore nella ricerca del ISBN: " + ex.getMessage());
+//        } catch (Exception ex) {
+//            System.out.println("Errore imprevisto: " + ex.getMessage());
+//        }
+
+
+        // METODO RICERCA ANNO
 
         try {
-            catalogoDAO.deleteByIsbn(isbnDelete);
-            System.out.println("Elemento rimosso con successo.");
-        } catch (IsbnNonTrovatoException ex) {
-            System.out.println("Errore nella ricerca del ISBN: " + ex.getMessage());
-        } catch (Exception ex) {
-            System.out.println("Errore imprevisto: " + ex.getMessage());
+            List<ElementoCatalogo> elementi = catalogoDAO.findByAnnoP(2014);
+            elementi.forEach(elemento -> System.out.println("Elemento trovati: " + elemento.getClass().getSimpleName() + " : " + elemento.getTitolo()));
+        } catch (ElementoNonTrovatoException ex) {
+            System.out.println(ex.getMessage());
         }
 
+
+        // METODO RICERCA AUTORE
+
+        try {
+            List<Libri> libriAutore = catalogoDAO.findByAutore("Susan Napier");
+            libriAutore.forEach(libri -> System.out.println("Elemento trovato: " + libri.getTitolo()));
+        } catch (ElementoNonTrovatoException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        // METODO RICERCA TITOLO
+
+        try {
+            List<ElementoCatalogo> titolo = catalogoDAO.findByTitolo("La storia");
+            titolo.forEach(elemento -> System.out.println("Elemento trovato: " + elemento.getTitolo()));
+        } catch (ElementoNonTrovatoException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }

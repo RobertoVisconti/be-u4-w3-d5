@@ -5,8 +5,12 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import robertovisconti.entities.ElementoCatalogo;
+import robertovisconti.entities.Libri;
 import robertovisconti.exceptions.ElementoDuplicatoException;
+import robertovisconti.exceptions.ElementoNonTrovatoException;
 import robertovisconti.exceptions.IsbnNonTrovatoException;
+
+import java.util.List;
 
 public class CatalogoDAO {
     private final EntityManager em;
@@ -62,4 +66,36 @@ public class CatalogoDAO {
         }
     }
 
+    // Ricerca tramite AnnoPubblicazione
+    public List<ElementoCatalogo> findByAnnoP(int anno) {
+        TypedQuery<ElementoCatalogo> query = em.createQuery("SELECT e FROM ElementoCatalogo e WHERE e.annoPubblicazione = :anno", ElementoCatalogo.class);
+        query.setParameter("anno", anno);
+        List<ElementoCatalogo> result = query.getResultList();
+        if (result.isEmpty()) {
+            throw new ElementoNonTrovatoException("Nessun elemento trovato per l'anno di pubblicazione: " + anno);
+        }
+        return result;
+    }
+
+    // Ricerca tramite Autore
+    public List<Libri> findByAutore(String autore) {
+        TypedQuery<Libri> query = em.createQuery("SELECT l FROM Libri l WHERE LOWER(l.autore) = LOWER(:autore)", Libri.class);
+        query.setParameter("autore", autore);
+        List<Libri> result = query.getResultList();
+        if (result.isEmpty()) {
+            throw new ElementoNonTrovatoException("Nessun libro trovato per l'autore: " + autore);
+        }
+        return result;
+    }
+
+    // Ricerca tramite titolo
+    public List<ElementoCatalogo> findByTitolo(String titolo) {
+        TypedQuery<ElementoCatalogo> query = em.createQuery("SELECT e FROM ElementoCatalogo e WHERE LOWER(e.titolo) LIKE LOWER(:titolo)", ElementoCatalogo.class);
+        query.setParameter("titolo", "%" + titolo + "%");
+        List<ElementoCatalogo> result = query.getResultList();
+        if (result.isEmpty()) {
+            throw new ElementoNonTrovatoException("Nessun elemento trovato con il titolo: " + titolo);
+        }
+        return result;
+    }
 }
