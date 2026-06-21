@@ -17,6 +17,9 @@ public abstract class ElementoCatalogo {
     @Column(name = "codice_isbn", unique = true, nullable = false)
     private String codiceISBN;
 
+    @Column(nullable = false)
+    private String titolo;
+
     @Column(name = "anno_pubblicazione", nullable = false)
     private int annoPubblicazione;
 
@@ -26,8 +29,9 @@ public abstract class ElementoCatalogo {
     protected ElementoCatalogo() {
     }
 
-    public ElementoCatalogo(UUID id, String codiceISBN, int annoPubblicazione, Integer numeroPagine) {
+    public ElementoCatalogo(String codiceISBN, String titolo, int annoPubblicazione, Integer numeroPagine) {
         this.id = id;
+        this.titolo = titolo;
         this.codiceISBN = codiceISBN;
         this.annoPubblicazione = annoPubblicazione;
         this.numeroPagine = numeroPagine;
