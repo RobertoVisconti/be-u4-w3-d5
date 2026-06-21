@@ -33,7 +33,7 @@ public class CatalogoDAO {
             throw new ElementoDuplicatoException("L'elemento che stai inserendo è già presente nel catalogo. " + ex.getMessage());
         } catch (Exception ex) {
             if (transaction.isActive()) transaction.rollback();
-            System.out.println("Errore durante il salvataggio: " + ex.getMessage());
+            System.out.println("Errore durante il salvataggio nel catalogo: " + ex.getMessage());
         }
     }
 
