@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import robertovisconti.entities.ElementoCatalogo;
 import robertovisconti.exceptions.ElementoDuplicatoException;
+import robertovisconti.exceptions.IsbnNonTrovatoException;
 
 public class CatalogoDAO {
     private final EntityManager em;
@@ -39,6 +40,26 @@ public class CatalogoDAO {
         return query.getResultStream().findFirst().orElse(null);
     }
 
+    // rimozione libro o rivista tramite ISBN
+    public void deleteByIsbn(String isbn) {
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            ElementoCatalogo elemento = findByIsbn(isbn);
+            if (elemento != null) {
+                em.remove(elemento);
+                transaction.commit();
+                System.out.println("Elemento: " + elemento + " rimosso con successo.");
+            } else {
+                if (transaction.isActive()) transaction.rollback();
+                throw new IsbnNonTrovatoException(isbn);
+            }
+        } catch (IsbnNonTrovatoException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            if (transaction.isActive()) transaction.rollback();
+            System.out.println("Errore durante la rimozione: " + ex.getMessage());
+        }
+    }
 
-    //
 }

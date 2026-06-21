@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import robertovisconti.dao.CatalogoDAO;
-import robertovisconti.entities.ElementoCatalogo;
 import robertovisconti.entities.Libri;
 import robertovisconti.entities.Riviste;
 import robertovisconti.enums.Periodicita;
@@ -42,15 +41,28 @@ public class Application {
 
         // METODO RICERCA ISBN
 
-        String isbnRicerca = "9772039411012";
+//        String isbnRicerca = "9772039411012";
+//
+//        ElementoCatalogo elementoTrovato = catalogoDAO.findByIsbn(isbnRicerca);
+//        if (elementoTrovato != null) {
+//            System.out.println("Elemento trovato nel db: " + elementoTrovato);
+//        } else {
+//            throw new IsbnNonTrovatoException(isbnRicerca);
+//        }
 
-        ElementoCatalogo elementoTrovato = catalogoDAO.findByIsbn(isbnRicerca);
-        if (elementoTrovato != null) {
-            System.out.println("Elemento trovato nel db: " + elementoTrovato);
-        } else {
-            throw new IsbnNonTrovatoException(isbnRicerca);
+
+        // METODO DELETE ISBN
+
+        String isbnDelete = "9771120533002";
+
+        try {
+            catalogoDAO.deleteByIsbn(isbnDelete);
+            System.out.println("Elemento rimosso con successo.");
+        } catch (IsbnNonTrovatoException ex) {
+            System.out.println("Errore nella ricerca del ISBN: " + ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Errore imprevisto: " + ex.getMessage());
         }
-
 
     }
 }

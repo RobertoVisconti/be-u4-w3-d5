@@ -58,7 +58,8 @@ public abstract class ElementoCatalogo {
     public String toString() {
         return "ElementoCatalogo{" +
                 "id=" + id +
-                ", codiceISBN='" + codiceIsbn + '\'' +
+                ", codiceIsbn='" + codiceIsbn + '\'' +
+                ", titolo='" + titolo + '\'' +
                 ", annoPubblicazione=" + annoPubblicazione +
                 ", numeroPagine=" + numeroPagine +
                 '}';
