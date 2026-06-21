@@ -15,7 +15,7 @@ public abstract class ElementoCatalogo {
     private UUID id;
 
     @Column(name = "codice_isbn", unique = true, nullable = false)
-    private String codiceISBN;
+    private String codiceIsbn;
 
     @Column(nullable = false)
     private String titolo;
@@ -32,7 +32,7 @@ public abstract class ElementoCatalogo {
     public ElementoCatalogo(String codiceISBN, String titolo, int annoPubblicazione, Integer numeroPagine) {
         this.id = id;
         this.titolo = titolo;
-        this.codiceISBN = codiceISBN;
+        this.codiceIsbn = codiceISBN;
         this.annoPubblicazione = annoPubblicazione;
         this.numeroPagine = numeroPagine;
 
@@ -43,7 +43,7 @@ public abstract class ElementoCatalogo {
     }
 
     public String getCodiceISBN() {
-        return codiceISBN;
+        return codiceIsbn;
     }
 
     public int getAnnoPubblicazione() {
@@ -58,7 +58,7 @@ public abstract class ElementoCatalogo {
     public String toString() {
         return "ElementoCatalogo{" +
                 "id=" + id +
-                ", codiceISBN='" + codiceISBN + '\'' +
+                ", codiceISBN='" + codiceIsbn + '\'' +
                 ", annoPubblicazione=" + annoPubblicazione +
                 ", numeroPagine=" + numeroPagine +
                 '}';

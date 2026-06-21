@@ -4,9 +4,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import robertovisconti.dao.CatalogoDAO;
+import robertovisconti.entities.ElementoCatalogo;
 import robertovisconti.entities.Libri;
 import robertovisconti.entities.Riviste;
 import robertovisconti.enums.Periodicita;
+import robertovisconti.exceptions.IsbnNonTrovatoException;
 
 public class Application {
 
@@ -18,6 +20,9 @@ public class Application {
 
         // DAO
         CatalogoDAO catalogoDAO = new CatalogoDAO(em);
+
+
+        // METODO SAVE
 
         Libri lb1 = new Libri("9788863552243", "La storia dell'animazione giapponese", 2012, 608, "Guido Tavassi", "Saggistica");
         Libri lb2 = new Libri("9788831003780", "Il mondo di Miyazaki", 2020, 310, "Susan Napier", "Cinema");
@@ -33,6 +38,19 @@ public class Application {
 //        catalogoDAO.save(rv1);
 //        catalogoDAO.save(rv2);
 //        catalogoDAO.save(rv3);
+
+
+        // METODO RICERCA ISBN
+
+        String isbnRicerca = "9772039411012";
+
+        ElementoCatalogo elementoTrovato = catalogoDAO.findByIsbn(isbnRicerca);
+        if (elementoTrovato != null) {
+            System.out.println("Elemento trovato nel db: " + elementoTrovato);
+        } else {
+            throw new IsbnNonTrovatoException(isbnRicerca);
+        }
+
 
     }
 }

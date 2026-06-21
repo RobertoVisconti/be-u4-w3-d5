@@ -3,6 +3,7 @@ package robertovisconti.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.TypedQuery;
 import robertovisconti.entities.ElementoCatalogo;
 import robertovisconti.exceptions.ElementoDuplicatoException;
 
@@ -30,4 +31,14 @@ public class CatalogoDAO {
             System.out.println("Errore durante il salvataggio: " + ex.getMessage());
         }
     }
+
+    // ricerca tramite ISBN
+    public ElementoCatalogo findByIsbn(String isbn) {
+        TypedQuery<ElementoCatalogo> query = em.createQuery("SELECT  e FROM  ElementoCatalogo e WHERE e.codiceIsbn = :isbn", ElementoCatalogo.class);
+        query.setParameter("isbn", isbn);
+        return query.getResultStream().findFirst().orElse(null);
+    }
+
+
+    //
 }
